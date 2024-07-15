@@ -1,44 +1,35 @@
-#include <gtest/gtest.h>
 #include "StringCalculator.h"
+#include <gtest/gtest.h>
 
-TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
-    int expectedresult = 0;
-    const char* input = "";
-    int result = add(input);
-    ASSERT_EQ(result, expectedresult);
+// Test cases for StringCalculator.h
+
+TEST(StringCalculatorAddTests, EmptyStringInput) {
+    EXPECT_EQ(add(""), 0);
 }
 
-TEST(StringCalculatorAddTests, ExpectZeroForSingleZero) {
-    int expectedresult = 0;
-    const char* input = "0";
-    int result = add(input);
-    ASSERT_EQ(result, expectedresult);
+TEST(StringCalculatorAddTests, SingleNumberInput) {
+    EXPECT_EQ(add("5"), 5);
 }
 
-TEST(StringCalculatorAddTests, ExpectSumForTwoNumbers) {
-    int expectedresult = 3;
-    const char*  input = "1,2";
-    int result = add(input);
-    ASSERT_EQ(result, expectedresult);
+TEST(StringCalculatorAddTests, TwoNumbersWithDefaultDelimiters) {
+    EXPECT_EQ(add("1,2"), 3);
 }
 
-TEST(StringCalculatorAddTests, ExpectSumWithNewlineDelimiter) {
-    int expectedresult = 6;
-    const char*  input = "1\n2,3";
-    int result =add(input);
-    ASSERT_EQ(result, expectedresult);
+TEST(StringCalculatorAddTests, CustomDelimiter) {
+    EXPECT_EQ(add("//;\n1;2"), 3);
+}
+
+TEST(StringCalculatorAddTests, NegativeNumbers) {
+    try {
+        add("1,-2,3");
+        FAIL() << "Expected std::runtime_error";
+    } catch (const std::runtime_error& e) {
+        EXPECT_STREQ("negatives not allowed: -2", e.what());
+    } catch (...) {
+        FAIL() << "Expected std::runtime_error";
+    }
 }
 
 TEST(StringCalculatorAddTests, IgnoreNumbersGreaterThan1000) {
-    int expectedresult = 1;
-    const char*  input = "1,1001";
-    int result =add(input);
-    ASSERT_EQ(result, expectedresult);
+    EXPECT_EQ(add("2,1001,5"), 7);
 }
-
-TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiter) {
-    int expectedresult = 3;
-    const char*  input = "//;\n1;2";
-    int result = add(input);
-    ASSERT_EQ(result, expectedresult);
-} 
