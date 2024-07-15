@@ -1,7 +1,7 @@
 #include "StringCalculator.h"
 #include <gtest/gtest.h>
 
-// Test cases for StringCalculator.h
+// Additional test cases to improve coverage
 
 TEST(StringCalculatorAddTests, EmptyStringInput) {
     EXPECT_EQ(add(""), 0);
