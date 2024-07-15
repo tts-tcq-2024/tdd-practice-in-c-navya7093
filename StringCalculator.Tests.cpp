@@ -42,3 +42,6 @@ TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiter) {
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
+TEST(StringCalculatorAddTests, ExpectZeroForSingleZero) {
+    EXPECT_EQ(add("0"), 0);
+}
