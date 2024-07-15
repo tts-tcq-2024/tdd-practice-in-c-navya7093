@@ -52,6 +52,14 @@ namespace {
         return ",\n";
     }
 
+    std::string getNumbersString(const std::string& str) {
+        if (str.substr(0, 2) == "//") {
+            size_t newlinePos = str.find('\n');
+            return str.substr(newlinePos + 1);
+        }
+        return str;
+    }
+
     void throwNegativesException(const std::vector<int>& negatives) {
         std::ostringstream oss;
         oss << "negatives not allowed: ";
@@ -97,28 +105,31 @@ namespace {
         }
         return numbers;
     }
+
+    int handleEmptyInput(const std::string& numbers) {
+        return numbers.empty() ? 0 : -1; // Return -1 to indicate non-empty input
+    }
+
+    std::vector<std::string> extractTokens(const std::string& numbers) {
+        std::string delimiters = getDelimiter(numbers);
+        std::string nums = getNumbersString(numbers);
+        return tokenize(nums, delimiters);
+    }
+
+    std::vector<int> extractAndParseNumbers(const std::string& numbers) {
+        std::vector<std::string> tokens = extractTokens(numbers);
+        return parseNumbers(tokens);
+    }
+
 }
 
 int add(const std::string& numbers) {
-    if (numbers.empty()) {
-        return 0;
+    int result = handleEmptyInput(numbers);
+    if (result != -1) {
+        return result;
     }
 
-    std::string delimiters = ",\n";
-    std::string nums = numbers;
-
-    if (numbers.substr(0, 2) == "//") {
-        size_t newlinePos = numbers.find('\n');
-        delimiters = numbers.substr(2, newlinePos - 2);
-        nums = numbers.substr(newlinePos + 1);
-    }
-
-    std::vector<std::string> tokens = tokenize(nums, delimiters);
-    if (tokens.empty() || (tokens.size() == 1 && tokens[0].empty())) {
-        return 0;
-    }
-
-    std::vector<int> parsedNumbers = parseNumbers(tokens);
+    std::vector<int> parsedNumbers = extractAndParseNumbers(numbers);
     checkNegatives(parsedNumbers);
     return sumNumbers(parsedNumbers);
 }
