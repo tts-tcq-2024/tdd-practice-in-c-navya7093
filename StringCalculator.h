@@ -9,20 +9,22 @@
 
 namespace {
 
+    void addTokenIfNotEmpty(const std::string& token, std::vector<std::string>& tokens) {
+        if (!token.empty()) {
+            tokens.push_back(token);
+        }
+    }
+
     std::vector<std::string> splitHelper(const std::string& str, const std::string& delimiter) {
         std::vector<std::string> tokens;
         size_t prev = 0, pos = 0;
         while ((pos = str.find(delimiter, prev)) != std::string::npos) {
             std::string token = str.substr(prev, pos - prev);
-            if (!token.empty()) {
-                tokens.push_back(token);
-            }
+            addTokenIfNotEmpty(token, tokens);
             prev = pos + delimiter.length();
         }
         std::string token = str.substr(prev);
-        if (!token.empty()) {
-            tokens.push_back(token);
-        }
+        addTokenIfNotEmpty(token, tokens);
         return tokens;
     }
 
