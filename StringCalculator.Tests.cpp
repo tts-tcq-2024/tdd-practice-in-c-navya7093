@@ -30,10 +30,7 @@ TEST(StringCalculatorAddTests, ExpectSumWithNewlineDelimiter) {
 }
 
 TEST(StringCalculatorAddTests, IgnoreNumbersGreaterThan1000) {
-    int expectedresult = 1;
-    const char*  input = "1,1001";
-    int result =add(input);
-    ASSERT_EQ(result, expectedresult);
+    EXPECT_EQ(add("2,1001,5"), 7);
 }
 
 TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiter) {
