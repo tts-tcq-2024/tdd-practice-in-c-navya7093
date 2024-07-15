@@ -1,35 +1,63 @@
-#include "StringCalculator.h"
 #include <gtest/gtest.h>
+#include "StringCalculator.h"
 
-// Additional test cases to improve coverage
-
-TEST(StringCalculatorAddTests, EmptyStringInput) {
-    EXPECT_EQ(add(""), 0);
+// Test for empty input
+TEST(StringCalculatorTests, EmptyInput) {
+    int expectedresult = 0;
+    const char* input = "";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
 }
 
-TEST(StringCalculatorAddTests, SingleNumberInput) {
-    EXPECT_EQ(add("5"), 5);
+// Test for single number input
+TEST(StringCalculatorTests, SingleNumber) {
+    int expectedresult = 1;
+    const char* input = "1";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
 }
 
-TEST(StringCalculatorAddTests, TwoNumbersWithDefaultDelimiters) {
-    EXPECT_EQ(add("1,2"), 3);
+// Test for two numbers separated by comma
+TEST(StringCalculatorTests, TwoNumbersWithComma) {
+    int expectedresult = 3;
+    const char* input = "1,2";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
 }
 
-TEST(StringCalculatorAddTests, CustomDelimiter) {
-    EXPECT_EQ(add("//;\n1;2"), 3);
+// Test for newline as delimiter
+TEST(StringCalculatorTests, NewlineAsDelimiter) {
+    int expectedresult = 6;
+    const char* input = "1\n2,3";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
 }
 
-TEST(StringCalculatorAddTests, NegativeNumbers) {
+// Test to ignore numbers greater than 1000
+TEST(StringCalculatorTests, IgnoreNumbersGreaterThan1000) {
+    int expectedresult = 1;
+    const char* input = "1,1001";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
+
+// Test for custom delimiter
+TEST(StringCalculatorTests, CustomDelimiter) {
+    int expectedresult = 3;
+    const char* input = "//;\n1;2";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
+
+// Test for negative numbers
+TEST(StringCalculatorTests, NegativeNumbers) {
+    const char* input = "-1,2,-3";
     try {
-        add("1,-2,3");
-        FAIL() << "Expected std::runtime_error";
-    } catch (const std::runtime_error& e) {
-        EXPECT_STREQ("negatives not allowed: -2", e.what());
+        add(input);
+        FAIL() << "Expected std::runtime_error for negative numbers";
+    } catch (const std::runtime_error& err) {
+        ASSERT_STREQ(err.what(), "negatives not allowed: -1, -3");
     } catch (...) {
-        FAIL() << "Expected std::runtime_error";
+        FAIL() << "Expected std::runtime_error for negative numbers";
     }
-}
-
-TEST(StringCalculatorAddTests, IgnoreNumbersGreaterThan1000) {
-    EXPECT_EQ(add("2,1001,5"), 7);
 }
