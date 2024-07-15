@@ -124,9 +124,8 @@ namespace {
 }
 
 int add(const std::string& numbers) {
-    int result = handleEmptyInput(numbers);
-    if (result != -1) {
-        return result;
+    if (numbers.empty()) {
+        return 0;
     }
 
     std::vector<int> parsedNumbers = extractAndParseNumbers(numbers);
