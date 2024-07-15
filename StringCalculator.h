@@ -114,6 +114,10 @@ int add(const std::string& numbers) {
     }
 
     std::vector<std::string> tokens = tokenize(nums, delimiters);
+    if (tokens.empty() || (tokens.size() == 1 && tokens[0].empty())) {
+        return 0;
+    }
+
     std::vector<int> parsedNumbers = parseNumbers(tokens);
     checkNegatives(parsedNumbers);
     return sumNumbers(parsedNumbers);
