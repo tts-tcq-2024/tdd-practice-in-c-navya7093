@@ -9,21 +9,25 @@
 
 namespace {
 
-    std::vector<std::string> splitHelper(const std::string& str, const std::string& delimiter, size_t& prev, size_t& pos) {
+    std::vector<std::string> splitHelper(const std::string& str, const std::string& delimiter) {
         std::vector<std::string> tokens;
-        do {
-            pos = str.find(delimiter, prev);
-            if (pos == std::string::npos) pos = str.length();
+        size_t prev = 0, pos = 0;
+        while ((pos = str.find(delimiter, prev)) != std::string::npos) {
             std::string token = str.substr(prev, pos - prev);
-            if (!token.empty()) tokens.push_back(token);
+            if (!token.empty()) {
+                tokens.push_back(token);
+            }
             prev = pos + delimiter.length();
-        } while (pos < str.length() && prev < str.length());
+        }
+        std::string token = str.substr(prev);
+        if (!token.empty()) {
+            tokens.push_back(token);
+        }
         return tokens;
     }
 
     std::vector<std::string> split(const std::string& str, const std::string& delimiter) {
-        size_t prev = 0, pos = 0;
-        return splitHelper(str, delimiter, prev, pos);
+        return splitHelper(str, delimiter);
     }
 
     std::vector<std::string> tokenize(const std::string& str, const std::string& delimiters) {
@@ -56,13 +60,17 @@ namespace {
         throw std::runtime_error(oss.str());
     }
 
-    void checkNegatives(const std::vector<int>& numbers) {
-        std::vector<int> negatives;
+    void collectNegatives(const std::vector<int>& numbers, std::vector<int>& negatives) {
         for (int num : numbers) {
             if (num < 0) {
                 negatives.push_back(num);
             }
         }
+    }
+
+    void checkNegatives(const std::vector<int>& numbers) {
+        std::vector<int> negatives;
+        collectNegatives(numbers, negatives);
         if (!negatives.empty()) {
             throwNegativesException(negatives);
         }
