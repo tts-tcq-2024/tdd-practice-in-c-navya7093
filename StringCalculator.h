@@ -8,9 +8,9 @@
 #include <regex>
 
 namespace {
-    std::vector<std::string> split(const std::string& str, const std::string& delimiter) {
+
+    std::vector<std::string> splitHelper(const std::string& str, const std::string& delimiter, size_t& prev, size_t& pos) {
         std::vector<std::string> tokens;
-        size_t prev = 0, pos = 0;
         do {
             pos = str.find(delimiter, prev);
             if (pos == std::string::npos) pos = str.length();
@@ -19,6 +19,11 @@ namespace {
             prev = pos + delimiter.length();
         } while (pos < str.length() && prev < str.length());
         return tokens;
+    }
+
+    std::vector<std::string> split(const std::string& str, const std::string& delimiter) {
+        size_t prev = 0, pos = 0;
+        return splitHelper(str, delimiter, prev, pos);
     }
 
     std::vector<std::string> tokenize(const std::string& str, const std::string& delimiters) {
@@ -41,6 +46,16 @@ namespace {
         return ",\n";
     }
 
+    void throwNegativesException(const std::vector<int>& negatives) {
+        std::ostringstream oss;
+        oss << "negatives not allowed: ";
+        for (size_t i = 0; i < negatives.size(); ++i) {
+            if (i > 0) oss << ", ";
+            oss << negatives[i];
+        }
+        throw std::runtime_error(oss.str());
+    }
+
     void checkNegatives(const std::vector<int>& numbers) {
         std::vector<int> negatives;
         for (int num : numbers) {
@@ -49,13 +64,7 @@ namespace {
             }
         }
         if (!negatives.empty()) {
-            std::ostringstream oss;
-            oss << "negatives not allowed: ";
-            for (size_t i = 0; i < negatives.size(); ++i) {
-                if (i > 0) oss << ", ";
-                oss << negatives[i];
-            }
-            throw std::runtime_error(oss.str());
+            throwNegativesException(negatives);
         }
     }
 
