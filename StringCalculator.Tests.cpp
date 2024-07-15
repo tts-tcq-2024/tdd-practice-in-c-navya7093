@@ -3,7 +3,7 @@
 
 TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int expectedresult = 0;
-    std::string input = "";
+    const char* input = "";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
