@@ -6,9 +6,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <regex>
-#include <iostream>
-
-int add(const std::string& numbers);
 
 namespace {
     std::vector<std::string> split(const std::string& str, const std::string& delimiter) {
@@ -43,6 +40,44 @@ namespace {
         }
         return ",\n";
     }
+
+    void checkNegatives(const std::vector<int>& numbers) {
+        std::vector<int> negatives;
+        for (int num : numbers) {
+            if (num < 0) {
+                negatives.push_back(num);
+            }
+        }
+        if (!negatives.empty()) {
+            std::ostringstream oss;
+            oss << "negatives not allowed: ";
+            for (size_t i = 0; i < negatives.size(); ++i) {
+                if (i > 0) oss << ", ";
+                oss << negatives[i];
+            }
+            throw std::runtime_error(oss.str());
+        }
+    }
+
+    int sumNumbers(const std::vector<int>& numbers) {
+        int sum = 0;
+        for (int num : numbers) {
+            if (num <= 1000) {
+                sum += num;
+            }
+        }
+        return sum;
+    }
+
+    std::vector<int> parseNumbers(const std::vector<std::string>& tokens) {
+        std::vector<int> numbers;
+        for (const std::string& token : tokens) {
+            if (!token.empty()) {
+                numbers.push_back(std::stoi(token));
+            }
+        }
+        return numbers;
+    }
 }
 
 int add(const std::string& numbers) {
@@ -60,31 +95,9 @@ int add(const std::string& numbers) {
     }
 
     std::vector<std::string> tokens = tokenize(nums, delimiters);
-    int sum = 0;
-    std::vector<int> negatives;
-
-    for (const std::string& token : tokens) {
-        if (!token.empty()) {
-            int num = std::stoi(token);
-            if (num < 0) {
-                negatives.push_back(num);
-            } else if (num <= 1000) {
-                sum += num;
-            }
-        }
-    }
-
-    if (!negatives.empty()) {
-        std::ostringstream oss;
-        oss << "negatives not allowed: ";
-        for (size_t i = 0; i < negatives.size(); ++i) {
-            if (i > 0) oss << ", ";
-            oss << negatives[i];
-        }
-        throw std::runtime_error(oss.str());
-    }
-
-    return sum;
+    std::vector<int> parsedNumbers = parseNumbers(tokens);
+    checkNegatives(parsedNumbers);
+    return sumNumbers(parsedNumbers);
 }
 
 #endif // STRING_CALCULATOR_H
