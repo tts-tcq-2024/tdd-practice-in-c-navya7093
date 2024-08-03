@@ -83,12 +83,4 @@ int add_numbers(const char* str) {
     return process_input_and_sum(str, delimiter);
 }
 
-// Example usage
-int main() {
-    const char* input = "//;\n1;2\n3,4";
-    int result = add_numbers(input);
-    if (result != -1) {
-        printf("Sum: %d\n", result);
-    }
-    return 0;
-}
+
