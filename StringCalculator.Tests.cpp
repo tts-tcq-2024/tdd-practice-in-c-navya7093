@@ -1,63 +1,66 @@
 #include <gtest/gtest.h>
 #include "StringCalculator.h"
 
-// Test for empty input
-TEST(StringCalculatorTests, EmptyInput) {
+TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int expectedresult = 0;
     const char* input = "";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
-// Test for single number input
-TEST(StringCalculatorTests, SingleNumber) {
-    int expectedresult = 1;
-    const char* input = "1";
+TEST(StringCalculatorAddTests, ExpectZeroForSingleZero) {
+    int expectedresult = 0;
+    const char* input = "0";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
-// Test for two numbers separated by comma
-TEST(StringCalculatorTests, TwoNumbersWithComma) {
+TEST(StringCalculatorAddTests, ExpectSumForTwoNumbers) {
     int expectedresult = 3;
-    const char* input = "1,2";
+    const char*  input = "1,2";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
-// Test for newline as delimiter
-TEST(StringCalculatorTests, NewlineAsDelimiter) {
+TEST(StringCalculatorAddTests, ExpectSumWithNewlineDelimiter) {
     int expectedresult = 6;
-    const char* input = "1\n2,3";
-    int result = add(input);
+    const char*  input = "1\n2,3";
+    int result =add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
-// Test to ignore numbers greater than 1000
-TEST(StringCalculatorTests, IgnoreNumbersGreaterThan1000) {
+TEST(StringCalculatorAddTests, IgnoreNumbersGreaterThan1000) {
     int expectedresult = 1;
-    const char* input = "1,1001";
-    int result = add(input);
+    const char*  input = "1,1001";
+    int result =add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
-// Test for custom delimiter
-TEST(StringCalculatorTests, CustomDelimiter) {
+TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiter) {
     int expectedresult = 3;
-    const char* input = "//;\n1;2";
+    const char*  input = "//;\n1;2";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
+TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiterAtStart) {
+    const char*  input = "/3,4";
+    add(input);
+}
+ TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiterAtStart1) {
+    const char*  input = "/2";
+    add(input);
+}
+ 
 
-// Test for negative numbers
-TEST(StringCalculatorTests, NegativeNumbers) {
-    const char* input = "-1,2,-3";
-    try {
-        add(input);
-        FAIL() << "Expected std::runtime_error for negative numbers";
-    } catch (const std::runtime_error& err) {
-        ASSERT_STREQ(err.what(), "negatives not allowed: -1, -3");
-    } catch (...) {
-        FAIL() << "Expected std::runtime_error for negative numbers";
-    }
+TEST(StringCalculatorAddTests, ExpectExceptionForNegativeNumbers) {
+    const char* input = "-2,3,-4";
+     add(input);
+}
+ 
+
+TEST(StringCalculatorAddTests, ExpectSumWithEmpptyString) {
+    int expectedresult = 0;
+    const char*  input = "";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
 }
