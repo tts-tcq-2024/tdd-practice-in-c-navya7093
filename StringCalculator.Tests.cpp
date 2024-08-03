@@ -53,7 +53,7 @@ TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiterAtStart) {
  
 
 TEST(StringCalculatorAddTests, ExpectExceptionForNegativeNumbers) {
-    const char* input = "-2,3,-4";
+    const char* input = "-1,3,-5";
      add(input);
 }
  
