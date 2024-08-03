@@ -2,85 +2,74 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
-// Function to check if the input string starts with a custom delimiter
-bool has_custom_delimiter(const char* str) {
+ 
+bool detect_custom_delimiter(const char* str) {
     return str[0] == '/' && str[1] == '/';
 }
-
-// Function to extract the custom delimiter from the input string
-void extract_custom_delimiter(const char* str, char* delimiter) {
+ 
+void get_custom_delimiter(const char* str, char* delimiter) {
     const char* start = str + 2; // Skip over "//"
     size_t length = strcspn(start, "\n"); // Find the position of the newline character
     strncpy(delimiter, start, length); // Copy the delimiter
     delimiter[length] = '\0'; // Null-terminate the delimiter
 }
-
-// Function to split the input string using the given delimiters and store the numbers in an array
-void split_and_convert_to_numbers(const char* str, const char* delimiters, int* numbers, int* count) {
+ 
+void tokenize_numbers(const char* str, const char* delimiters, int* nums, int* num_count) {
     char* copy = strdup(str);
     char* token = strtok(copy, delimiters);
     while (token) {
-        numbers[(*count)++] = atoi(token);
+        nums[(*num_count)++] = atoi(token);
         token = strtok(NULL, delimiters);
     }
     free(copy);
 }
-
-// Function to check for negative numbers in the array and generate an error message
-bool check_for_negatives(int* numbers, int count, char* error_message) {
+ 
+bool find_negatives(int* nums, int num_count, char* error_msg) {
     bool has_negatives = false;
-    strcpy(error_message, "negatives not allowed: ");
-    for (int i = 0; i < count; i++) {
-        if (numbers[i] < 0) {
+    strcpy(error_msg, "negatives not allowed: ");
+    for (int i = 0; i < num_count; i++) {
+        if (nums[i] < 0) {
             has_negatives = true;
-            char number_str[12];
-            snprintf(number_str, sizeof(number_str), "%d ", numbers[i]);
-            strcat(error_message, number_str);
+            char num_str[12];
+            snprintf(num_str, sizeof(num_str), "%d ", nums[i]);
+            strcat(error_msg, num_str);
         }
     }
     return has_negatives;
 }
-
-// Function to sum the numbers in the array, ignoring those greater than 1000
-int calculate_sum(int* numbers, int count) {
+ 
+int sum_numbers(int* nums, int num_count) {
     int total = 0;
-    for (int i = 0; i < count; i++) {
-        if (numbers[i] <= 1000) {
-            total += numbers[i];
+    for (int i = 0; i < num_count; i++) {
+        if (nums[i] <= 1000) {
+            total += nums[i];
         }
     }
     return total;
 }
-
-// Function to process the input string and return the sum of numbers
-int process_input_and_sum(const char* str, const char* delimiters) {
-    int numbers[1000];
-    int count = 0;
-    split_and_convert_to_numbers(str, delimiters, numbers, &count);
-
-    char error_message[256];
-    if (check_for_negatives(numbers, count, error_message)) {
-        printf("%s\n", error_message); // Print the error message for negative numbers
+ 
+int process_and_sum(const char* str, const char* delimiters) {
+    int nums[1000];
+    int num_count = 0;
+    tokenize_numbers(str, delimiters, nums, &num_count);
+ 
+    char error_msg[256];
+    if (find_negatives(nums, num_count, error_msg)) {
         return -1; // Indicate an error
     }
-
-    return calculate_sum(numbers, count);
+ 
+    return sum_numbers(nums, num_count);
 }
-
-// Main function to handle the input string and calculate the sum
-int add_numbers(const char* str) {
+ 
+int add(const char* str) {
     if (*str == '\0') {
         return 0;
     }
-
+ 
     char delimiter[10] = ",\n";
-    if (has_custom_delimiter(str)) {
-        extract_custom_delimiter(str, delimiter);
-        str = strchr(str, '\n') + 1; // Move past the custom delimiter line
+    if (detect_custom_delimiter(str)) {
+        get_custom_delimiter(str, delimiter);
     }
-
-    return process_input_and_sum(str, delimiter);
+ 
+    return process_and_sum(str, delimiter);
 }
-
-
