@@ -1,5 +1,3 @@
-// StringCalculator.h
-
 #ifndef STRINGCALCULATOR_H
 #define STRINGCALCULATOR_H
 
@@ -12,28 +10,23 @@ int add(const char* numbers) {
         return 0;
     }
     
-    // Handle single zero
-    if (strcmp(numbers, "0") == 0) {
-        return 0;
-    }
-    
-    // Handle single number (non-zero)
-    if (strchr(numbers, ',') == NULL) {
+    // Handle single number or zero
+    if (strchr(numbers, ',') == nullptr) {
         return atoi(numbers);
     }
 
-    // Handle two or more numbers separated by a comma
+    // Handle two numbers separated by a comma
     const char* delimiter = ",";
-    char* numbersCopy = strdup(numbers);  // Duplicate the input to avoid modifying the original string
+    char* numbersCopy = strdup(numbers);  // Duplicate string to modify it safely
     char* token = strtok(numbersCopy, delimiter);
     int sum = 0;
     
     while (token != NULL) {
-        sum += atoi(token);
-        token = strtok(NULL, delimiter);
+        sum += atoi(token);  // Convert token to integer and add to sum
+        token = strtok(NULL, delimiter);  // Get next token
     }
 
-    free(numbersCopy);  // Free the allocated memory
+    free(numbersCopy);  // Free the duplicated string memory
     return sum;
 }
 
