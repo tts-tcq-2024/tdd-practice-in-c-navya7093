@@ -8,10 +8,6 @@ int add(const char* numbers) {
     return 0;
 }
 
-#endif // STRINGCALCULATOR_H
-// StringCalculator.h
-
-
 int add(const char* numbers) {
     // Handle empty input
     if (strcmp(numbers, "") == 0) {
@@ -26,13 +22,6 @@ int add(const char* numbers) {
     // Convert single number string to integer
     return atoi(numbers);
 }
-
-#endif // STRINGCALCULATOR_H
-// StringCalculator.h
-
-
-
-
 int add(const char* numbers) {
     // Handle empty input
     if (strcmp(numbers, "") == 0) {
