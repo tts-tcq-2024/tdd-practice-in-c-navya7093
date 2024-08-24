@@ -25,3 +25,11 @@ TEST(StringCalculatorAddTests, ExpectSumWithNewlineDelimiter) {
     int result =add(input);
     ASSERT_EQ(result, expectedresult);
 }
+// Test case to cover the missing branch where both conditions are true
+TEST(StringCalculatorAddTests, ExpectSumForNoDelimiter) {
+    int expectedresult = 7;
+    const char* input = "7";  // A string without comma or newline
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
+
