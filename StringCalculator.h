@@ -8,15 +8,14 @@ int convertToInt(const char* token) {
     return atoi(token);
 }
 
-int sumTokens(const char* numbers) {
-    const char* delimiter = ",";
+int sumTokens(const char* numbers, const char* delimiters) {
     char* numbersCopy = strdup(numbers);  // Duplicate string to modify it safely
-    char* token = strtok(numbersCopy, delimiter);
+    char* token = strtok(numbersCopy, delimiters);
     int sum = 0;
     
     while (token != NULL) {
         sum += convertToInt(token);  // Use helper function to convert token
-        token = strtok(NULL, delimiter);  // Get next token
+        token = strtok(NULL, delimiters);  // Get next token
     }
 
     free(numbersCopy);  // Free the duplicated string memory
@@ -28,7 +27,7 @@ bool isEmpty(const char* numbers) {
 }
 
 bool isSingleNumber(const char* numbers) {
-    return strchr(numbers, ',') == nullptr;
+    return strchr(numbers, ',') == nullptr && strchr(numbers, '\n') == nullptr;
 }
 
 int add(const char* numbers) {
@@ -40,7 +39,8 @@ int add(const char* numbers) {
         return convertToInt(numbers);
     }
 
-    return sumTokens(numbers);
+    const char* delimiters = ",\n";  // Handle both comma and newline
+    return sumTokens(numbers, delimiters);
 }
 
 #endif // STRINGCALCULATOR_H
