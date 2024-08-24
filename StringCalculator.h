@@ -45,3 +45,4 @@ int add(const std::string& numbers) {
 }
 
 #endif // STRINGCALCULATOR_H
+
