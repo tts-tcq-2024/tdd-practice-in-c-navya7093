@@ -32,4 +32,10 @@ TEST(StringCalculatorAddTests, ExpectSumForNoDelimiter) {
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
+TEST(StringCalculatorAddTests, ExpectSumForBothCommaAndNewline) {
+    int expectedresult = 6;
+    const char* input = "1,2\n3";  // String with both a comma and newline
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
 
