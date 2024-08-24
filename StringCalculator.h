@@ -4,6 +4,10 @@
 #include <cstring>
 #include <cstdlib>
 
+int convertToInt(const char* token) {
+    return atoi(token);
+}
+
 int sumTokens(const char* numbers) {
     const char* delimiter = ",";
     char* numbersCopy = strdup(numbers);  // Duplicate string to modify it safely
@@ -11,7 +15,7 @@ int sumTokens(const char* numbers) {
     int sum = 0;
     
     while (token != NULL) {
-        sum += atoi(token);  // Convert token to integer and add to sum
+        sum += convertToInt(token);  // Use helper function to convert token
         token = strtok(NULL, delimiter);  // Get next token
     }
 
@@ -33,7 +37,7 @@ int add(const char* numbers) {
     }
     
     if (isSingleNumber(numbers)) {
-        return atoi(numbers);
+        return convertToInt(numbers);
     }
 
     return sumTokens(numbers);
