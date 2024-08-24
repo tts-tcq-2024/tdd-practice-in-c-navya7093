@@ -7,3 +7,9 @@ TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int result = add(input);
     ASSERT_EQ(result, expectedResult);
 }
+TEST(StringCalculatorAddTests, ExpectZeroForSingleZero) {
+    int expectedResult = 0;
+    const char* input = "0";
+    int result = add(input);
+    ASSERT_EQ(result, expectedResult);
+}
