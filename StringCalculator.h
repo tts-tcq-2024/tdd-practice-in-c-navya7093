@@ -4,18 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 
-int add(const char* numbers) {
-    // Handle empty input
-    if (strcmp(numbers, "") == 0) {
-        return 0;
-    }
-    
-    // Handle single number or zero
-    if (strchr(numbers, ',') == nullptr) {
-        return atoi(numbers);
-    }
-
-    // Handle two numbers separated by a comma
+int sumTokens(const char* numbers) {
     const char* delimiter = ",";
     char* numbersCopy = strdup(numbers);  // Duplicate string to modify it safely
     char* token = strtok(numbersCopy, delimiter);
@@ -28,6 +17,26 @@ int add(const char* numbers) {
 
     free(numbersCopy);  // Free the duplicated string memory
     return sum;
+}
+
+bool isEmpty(const char* numbers) {
+    return strcmp(numbers, "") == 0;
+}
+
+bool isSingleNumber(const char* numbers) {
+    return strchr(numbers, ',') == nullptr;
+}
+
+int add(const char* numbers) {
+    if (isEmpty(numbers)) {
+        return 0;
+    }
+    
+    if (isSingleNumber(numbers)) {
+        return atoi(numbers);
+    }
+
+    return sumTokens(numbers);
 }
 
 #endif // STRINGCALCULATOR_H
